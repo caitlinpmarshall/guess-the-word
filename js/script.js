@@ -69,9 +69,19 @@ const makeGuess = function(guess) {
     if (guessedLetters.includes(guess)) {
         message.innerText = "You've already guessed that letter. Try another.";
     } else {
-        guessedLetters.push(guess);
-        console.log(guessedLetters); 
+        showGuessedLetters(guess);
     }
+};
+
+const showGuessedLetters = function(guess){ // add "guess" as a parameter? yes
+    guessedLettersElement.innerHTML = "letters go here";
+    const li = document.createElement("li");
+    li.innerText = `${guess}` // ?
+    guessedLetters.push(li.innerText);
+    console.log(guessedLetters);
+    guessedLettersElement.innerHTML = guessedLetters;
+
+
 };
 
 
