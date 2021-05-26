@@ -30,7 +30,7 @@ const placeholder = function(word){
     const placeholderLetters = [];
     for (const letter of word){
         console.log(letter);
-        placeholderLetters.push("●"); //why is this sufficient? shouldn't it need each letter to get replaced separately?
+        placeholderLetters.push("●");
     }  
     wordInProgress.innerText = placeholderLetters.join("");
 };
@@ -73,15 +73,25 @@ const makeGuess = function(guess) {
     }
 };
 
-const showGuessedLetters = function(guess){ // add "guess" as a parameter? yes
+const showGuessedLetters = function(guess){ 
     guessedLettersElement.innerHTML = "letters go here";
     const li = document.createElement("li");
     li.innerText = `${guess}` // ?
     guessedLetters.push(li.innerText);
     console.log(guessedLetters);
     guessedLettersElement.innerHTML = guessedLetters;
-
-
 };
+
+const updateWord = function(guessedLetters){ // how know this parameter?
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("") // why didn't we do this way back in the first placeholders function? could we?
+    console.log(wordArray);
+    const guessArray = guessedLetters.split("");
+    if (wordArray.includes(guessArray) === true){
+        console.log("yep");
+    } 
+};
+
+updateWord(guessedLetters);
 
 
