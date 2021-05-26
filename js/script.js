@@ -25,3 +25,21 @@ const playAgainButton = document.querySelector(".play-again");
 const word = "magnolia";
 const guessedLetters = [];
 
+const placeholders = function(word) {
+    placeholderSymbols = [];
+    for (let letter of word) {
+        //console.log(letter);
+        placeholderSymbols.push("●");
+    }
+    wordInProgress.innerText = placeholderSymbols.join("");
+};
+
+placeholders(word);
+
+guessButton.addEventListener("click", function(e){
+    e.preventDefault();
+    userGuess = letterInput.value;
+    console.log(userGuess);
+    letterInput.value = "";
+});
+
