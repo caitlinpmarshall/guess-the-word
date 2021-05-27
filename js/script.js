@@ -44,6 +44,9 @@ guessButton.addEventListener("click", function(e){
     message.innerText = "";
     const validatedGuess = validateInput(userGuess); //I had "input" previously; why not input?
     console.log(validatedGuess);
+    if (validatedGuess !== undefined){
+        makeGuess(validatedGuess);
+    }
 });
 
 // testing whether to use input or input.value, on a simpler function first
@@ -57,7 +60,6 @@ const validateInput = function(input) {
     }
 };
 */
-
 
 const validateInput = function(input) { //why not a function of userGuess?
     const acceptedLetter = /[a-zA-Z]/;
@@ -73,3 +75,12 @@ const validateInput = function(input) { //why not a function of userGuess?
     }
 };
 
+const makeGuess = function(validatedGuess){ //"accepts a letter as the parameter" NB: and ONLY a letter
+    validatedGuess.toUpperCase();
+    if (guessedLetters.includes(validatedGuess)) {
+        message.innerText = "Oops, you've already guessed that one! Try another."
+    } else {
+        guessedLetters.push(validatedGuess);
+    }
+    console.log(guessedLetters);
+};
