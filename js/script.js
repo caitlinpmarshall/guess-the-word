@@ -39,7 +39,35 @@ placeholders(word);
 guessButton.addEventListener("click", function(e){
     e.preventDefault();
     userGuess = letterInput.value;
-    console.log(userGuess);
+    //console.log(userGuess);
     letterInput.value = "";
+    validateInput(userGuess); //I had "input" previously; why not input?
 });
+
+// testing whether to use input or input.value, on a simpler function first
+// conclusion: just input. also remember triple ===
+/*
+const validateInput = function(input) {
+    if (input === ""){ //was input.value
+        message.innerText = "blank";
+    } else {
+        message.innerText = input; //was input.value; how come don't need to specify 'value'?
+    }
+};
+*/
+
+
+const validateInput = function(input) { //why not a function of userGuess?
+    const acceptedLetter = /[a-zA-Z]/;
+    if (input === ""){
+        message.innerText = "Oops, you left it blank.  Please enter a letter from A to Z."
+    } else if (input.length > 1){ 
+        message.innerText = "That's too many letters.  Please enter just one letter from A to Z."
+    } else if (!input.match(acceptedLetter)) {
+        message.innerText = "Letters only, please! No numbers or special characters."
+    } else {
+        return input;
+        //console.log(input);
+    }
+};
 
