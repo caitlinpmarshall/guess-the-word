@@ -41,7 +41,9 @@ guessButton.addEventListener("click", function(e){
     userGuess = letterInput.value;
     //console.log(userGuess);
     letterInput.value = "";
-    validateInput(userGuess); //I had "input" previously; why not input?
+    message.innerText = "";
+    const validatedGuess = validateInput(userGuess); //I had "input" previously; why not input?
+    console.log(validatedGuess);
 });
 
 // testing whether to use input or input.value, on a simpler function first
