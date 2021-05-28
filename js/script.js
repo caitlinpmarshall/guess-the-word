@@ -36,6 +36,8 @@ const placeholders = function(word) {
 
 placeholders(word);
 
+//can I put event listener at the bottom of the code, so it all flows in order?
+
 guessButton.addEventListener("click", function(e){
     e.preventDefault();
     userGuess = letterInput.value;
@@ -70,17 +72,27 @@ const validateInput = function(input) { //why not a function of userGuess?
     } else if (!input.match(acceptedLetter)) {
         message.innerText = "Letters only, please! No numbers or special characters."
     } else {
-        return input;
+        return input.toUpperCase(); // this .toUpperCase was inside the makeGuess function 
         //console.log(input);
     }
 };
 
 const makeGuess = function(validatedGuess){ //"accepts a letter as the parameter" NB: and ONLY a letter
-    validatedGuess.toUpperCase();
+    //validatedGuess.toUpperCase(); toUpperCase is now appended to input inside the validator 
     if (guessedLetters.includes(validatedGuess)) {
         message.innerText = "Oops, you've already guessed that one! Try another."
     } else {
-        guessedLetters.push(validatedGuess);
+        //guessedLetters.push(validatedGuess); used to have just this line of code
+        showLetterGuessed(validatedGuess);
     }
     console.log(guessedLetters);
 };
+
+const showLetterGuessed = function(validatedGuess){ // parameter = validatedGuess?
+    guessedLettersElement.innerHTML = "";
+    const li = document.createElement("li");
+    li.innerText = `${validatedGuess}`;
+    guessedLetters.push(li.innerText);
+    guessedLettersElement.innerHTML = `${guessedLetters}`;
+};
+
