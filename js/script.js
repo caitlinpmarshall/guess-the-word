@@ -22,8 +22,10 @@ const message = document.querySelector(".message");
 // play again button (hidden initially)
 const playAgainButton = document.querySelector(".play-again");
 
-const word = "magnolia";
+const word = "mag"; //magnolia
 const guessedLetters = [];
+const wordUpper = word.toUpperCase();
+const wordArray = wordUpper.split("");
 
 const placeholders = function (word) {
     placeholderSymbols = [];
@@ -95,20 +97,31 @@ const showLetterGuessed = function (validatedGuess) { // parameter = validatedGu
     const li = document.createElement("li");
     li.innerText = `${validatedGuess}`;
     guessedLetters.push(li.innerText);
-    guessedLettersElement.innerHTML = `${guessedLetters}`;
+    guessedLettersElement.innerHTML = `${guessedLetters}`; //add a .join()?
 };
 
-const updateWordInProgress = function (guessedLetters) {
+const updateWordInProgress = function (guessedLetters) { //ought to be guessedLetters
     //if word includes guessed letters, replace a dot with the correct letter
-    const wordUpper = word.toUpperCase();
-    const wordArray = wordUpper.split("");
+    //const wordUpper = word.toUpperCase(); made this global above
+    //const wordArray = wordUpper.split(""); made this global above
     const validatedGuess = validateInput(userGuess); // is it ok to define this again, inside this function?
     console.log(`updateWordInProgress: These are the letters of the word to guess: ${wordArray}`);
     for (let letter of wordArray) {
         if (letter === validatedGuess){
             placeholderSymbols.splice(wordArray.indexOf(letter),1,validatedGuess);
+            console.log(`Current value of placeholderSymbols: ${placeholderSymbols}`)
             wordInProgress.innerText = `${placeholderSymbols.join("")}`;
-        }
+        } 
+    }
+    checkWin(placeholderSymbols);
+};
+
+const checkWin = function(placeholderSymbols){ //parameter should be new combo array, which for now is placeholderSymbols
+    //confirm whether the word in progress matches final word
+    //used stringify, since this situation truly requires just strings
+    if (JSON.stringify(wordArray) === JSON.stringify(placeholderSymbols)){
+        message.classList.add("win");
+        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
     }
 };
 
