@@ -1,33 +1,23 @@
-// list of letters already guessed
+//document variables
 const guessedLettersElement = document.querySelector(".guessed-letters");
-
-// guess button
 const guessButton = document.querySelector(".guess");
-
-// box where user inputs a guess
 const letterInput = document.querySelector(".letter");
-
-// word in progress paragraph
 const wordInProgress = document.querySelector(".word-in-progress");
-
-// remaining guesses paragraph
 const remainingGuessesElement = document.querySelector(".remaining");
-
-// span to show remaining number of guesses
-let numRemaining = document.querySelector(".remaining span");
-
-// messages to the user
+const numRemaining = document.querySelector(".remaining span");
 const message = document.querySelector(".message");
-
-// play again button (hidden initially)
 const playAgainButton = document.querySelector(".play-again");
 
+//global variables
 const word = "magnolia"; //magnolia
 const guessedLetters = [];
 const wordUpper = word.toUpperCase();
 const wordArray = wordUpper.split("");
 let remainingGuesses = 8;
 
+
+
+// hide the word to guess as a series of dots
 const placeholders = function (word) {
     placeholderSymbols = [];
     for (let letter of word) {
@@ -41,6 +31,7 @@ placeholders(word);
 
 //can I put event listener at the bottom of the code, so it all flows in order?
 
+//user clicks the "guess" button to submit a letter
 guessButton.addEventListener("click", function (e) {
     e.preventDefault();
     userGuess = letterInput.value;
@@ -66,6 +57,7 @@ const validateInput = function(input) {
 };
 */
 
+//validate whether user input is acceptable
 const validateInput = function (input) { //why not a function of userGuess?
     const acceptedLetter = /[a-zA-Z]/;
     if (input === "") {
@@ -80,6 +72,7 @@ const validateInput = function (input) { //why not a function of userGuess?
     }
 };
 
+//once guess is validated as a letter, checks whether it's already been guessed. if not, runs functions to show the letter, tally remaining guesses, and update the word in progress
 const makeGuess = function (validatedGuess) { //"accepts a letter as the parameter" NB: and ONLY a letter
     //validatedGuess.toUpperCase(); toUpperCase is now appended to input inside the validator 
     //validatedGuess was defined only within event listener, but I'm using it here; is that possible b/c makeGuess is called inside event listener?
@@ -94,6 +87,7 @@ const makeGuess = function (validatedGuess) { //"accepts a letter as the paramet
     console.log(guessedLetters);
 };
 
+//shows user a list of all letters guessed, whether in the word or not
 const showLetterGuessed = function (validatedGuess) { // parameter = validatedGuess?
     guessedLettersElement.innerHTML = "";
     const li = document.createElement("li");
@@ -102,6 +96,7 @@ const showLetterGuessed = function (validatedGuess) { // parameter = validatedGu
     guessedLettersElement.innerHTML = `${guessedLetters.join("")}`; //add a .join()?
 };
 
+//replaces dots with letters, when user guesses a letter that is in the word
 const updateWordInProgress = function (guessedLetters) {
     //if word includes guessed letters, replace a dot with the correct letter
     //const wordUpper = word.toUpperCase(); made this global above
@@ -119,6 +114,7 @@ const updateWordInProgress = function (guessedLetters) {
     checkWin(revealWord); // why no parameter required, but also ok to pass one?
 };
 
+//tallies remaining guesses allowed
 const countGuessesRemaining = function(input) { //userGuess, input, or validatedGuess as the parameter? userGuess and validatedGuess aren't global, so I'm going with input
     //tell user if their guess is in the word
     if (!wordUpper.includes(input)) {
@@ -138,6 +134,7 @@ const countGuessesRemaining = function(input) { //userGuess, input, or validated
     }
 }; 
 
+//checks if user has guessed all the right letters
 const checkWin = function(revealWord){ //why no parameter required?
     //confirm whether the word in progress matches final word
     //used stringify, since this situation truly requires just strings
