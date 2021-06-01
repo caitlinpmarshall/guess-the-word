@@ -22,7 +22,7 @@ const message = document.querySelector(".message");
 // play again button (hidden initially)
 const playAgainButton = document.querySelector(".play-again");
 
-const word = "mag"; //magnolia
+const word = "magnolia"; //magnolia
 const guessedLetters = [];
 const wordUpper = word.toUpperCase();
 const wordArray = wordUpper.split("");
@@ -95,31 +95,32 @@ const makeGuess = function (validatedGuess) { //"accepts a letter as the paramet
 const showLetterGuessed = function (validatedGuess) { // parameter = validatedGuess?
     guessedLettersElement.innerHTML = "";
     const li = document.createElement("li");
-    li.innerText = `${validatedGuess}`;
+    li.innerText = `${validatedGuess}`; //why does putting a space here no longer allow word in progress to show?
     guessedLetters.push(li.innerText);
-    guessedLettersElement.innerHTML = `${guessedLetters}`; //add a .join()?
+    guessedLettersElement.innerHTML = `${guessedLetters.join("")}`; //add a .join()?
 };
 
-const updateWordInProgress = function (guessedLetters) { //ought to be guessedLetters
+const updateWordInProgress = function (guessedLetters) {
     //if word includes guessed letters, replace a dot with the correct letter
     //const wordUpper = word.toUpperCase(); made this global above
     //const wordArray = wordUpper.split(""); made this global above
-    const validatedGuess = validateInput(userGuess); // is it ok to define this again, inside this function?
-    console.log(`updateWordInProgress: These are the letters of the word to guess: ${wordArray}`);
-    for (let letter of wordArray) {
-        if (letter === validatedGuess){
-            placeholderSymbols.splice(wordArray.indexOf(letter),1,validatedGuess);
-            console.log(`Current value of placeholderSymbols: ${placeholderSymbols}`)
-            wordInProgress.innerText = `${placeholderSymbols.join("")}`;
-        } 
+    const revealWord = [];
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) { // why don't need a for loop to cycle through guessedLetters?
+            revealWord.push(letter);
+        } else {
+            revealWord.push("●");
+        }
     }
-    checkWin(placeholderSymbols);
+    wordInProgress.innerText = revealWord.join("");
+    
+    checkWin(revealWord); // why no parameter required, but also ok to pass one?
 };
 
-const checkWin = function(placeholderSymbols){ //parameter should be new combo array, which for now is placeholderSymbols
+const checkWin = function(revealWord){ //why no parameter required?
     //confirm whether the word in progress matches final word
     //used stringify, since this situation truly requires just strings
-    if (JSON.stringify(wordArray) === JSON.stringify(placeholderSymbols)){
+    if (JSON.stringify(wordArray) === JSON.stringify(revealWord)){
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
     }
