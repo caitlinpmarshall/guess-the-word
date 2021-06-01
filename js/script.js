@@ -11,11 +11,15 @@ const playAgainButton = document.querySelector(".play-again");
 //global variables
 const word = "magnolia"; //magnolia
 const guessedLetters = [];
-const wordUpper = word.toUpperCase();
+const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
 const wordArray = wordUpper.split("");
 let remainingGuesses = 8;
 
-
+// async to fetch a random word
+const getWord = async function () {
+    const randomWord = await fetch ();
+    const randomWordFormatted = await randomWord.json();
+};
 
 // hide the word to guess as a series of dots
 const placeholders = function (word) {
@@ -103,7 +107,7 @@ const updateWordInProgress = function (guessedLetters) {
     //const wordArray = wordUpper.split(""); made this global above
     const revealWord = [];
     for (const letter of wordArray) {
-        if (guessedLetters.includes(letter)) { // why don't need a for loop to cycle through guessedLetters?
+        if (guessedLetters.includes(letter)) { // why don't need a for...of loop to cycle through guessedLetters?
             revealWord.push(letter);
         } else {
             revealWord.push("●");
