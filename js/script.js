@@ -11,10 +11,10 @@ const letterInput = document.querySelector(".letter");
 const wordInProgress = document.querySelector(".word-in-progress");
 
 // remaining guesses paragraph
-const remainingGuesses = document.querySelector(".remaining");
+const remainingGuessesElement = document.querySelector(".remaining");
 
 // span to show remaining number of guesses
-const numRemaining = document.querySelector(".remaining span");
+let numRemaining = document.querySelector(".remaining span");
 
 // messages to the user
 const message = document.querySelector(".message");
@@ -26,6 +26,7 @@ const word = "magnolia"; //magnolia
 const guessedLetters = [];
 const wordUpper = word.toUpperCase();
 const wordArray = wordUpper.split("");
+let remainingGuesses = 8;
 
 const placeholders = function (word) {
     placeholderSymbols = [];
@@ -87,6 +88,7 @@ const makeGuess = function (validatedGuess) { //"accepts a letter as the paramet
     } else {
         //guessedLetters.push(validatedGuess); used to have just this line of code
         showLetterGuessed(validatedGuess);
+        countGuessesRemaining(validatedGuess);
         updateWordInProgress(guessedLetters);
     }
     console.log(guessedLetters);
@@ -116,6 +118,25 @@ const updateWordInProgress = function (guessedLetters) {
     
     checkWin(revealWord); // why no parameter required, but also ok to pass one?
 };
+
+const countGuessesRemaining = function(input) { //userGuess, input, or validatedGuess as the parameter? userGuess and validatedGuess aren't global, so I'm going with input
+    //tell user if their guess is in the word
+    if (!wordUpper.includes(input)) {
+        remainingGuesses -= 1;
+        message.innerText = "Sorry! That's not a letter in the word.";
+    } else {
+        message.innerText = `Good guess! ${input} is in the word.`;
+    }
+    //update tally of remaining guesses
+    if (remainingGuesses === 0) {
+        message.innerText = `Game over! The word was ${wordUpper}. Better luck next time!`;
+    } else if (remainingGuesses === 1) {
+        remainingGuessesElement.innerText = "You have just one guess left!";
+    } else {
+        console.log(remainingGuesses);
+        numRemaining.innerText = `${remainingGuesses} guesses`;
+    }
+}; 
 
 const checkWin = function(revealWord){ //why no parameter required?
     //confirm whether the word in progress matches final word
