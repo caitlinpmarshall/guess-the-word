@@ -9,10 +9,11 @@ const message = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
 
 //global variables
-const word = "magnolia"; //magnolia
+let word = "magnolia"; //magnolia
 const guessedLetters = [];
-const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
-const wordArray = wordUpper.split("");
+//const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
+//having these up here seems to be forcing the code back to magnolia
+//const wordArray = wordUpper.split("");
 let remainingGuesses = 8;
 
 // async to fetch a random word
@@ -21,8 +22,9 @@ const getWord = async function () {
     const randomWordsFormatted = await randomWords.text();
     const randomWordsArray = randomWordsFormatted.split("\n");
     const randomIndex = Math.floor(Math.random()*randomWordsArray.length);
-    const oneRandomWord = randomWordsArray[randomIndex];
-    console.log(oneRandomWord);
+    const oneRandomWord = randomWordsArray[randomIndex].trim();
+    let word = oneRandomWord; //should this be let?
+    console.log(`value of variable word: ${word}`);
     placeholders(word);
 };
 
@@ -93,7 +95,7 @@ const makeGuess = function (validatedGuess) { //"accepts a letter as the paramet
         countGuessesRemaining(validatedGuess);
         updateWordInProgress(guessedLetters);
     }
-    console.log(guessedLetters);
+    //console.log(guessedLetters);
 };
 
 //shows user a list of all letters guessed, whether in the word or not
@@ -108,8 +110,8 @@ const showLetterGuessed = function (validatedGuess) { // parameter = validatedGu
 //replaces dots with letters, when user guesses a letter that is in the word
 const updateWordInProgress = function (guessedLetters) {
     //if word includes guessed letters, replace a dot with the correct letter
-    //const wordUpper = word.toUpperCase(); made this global above
-    //const wordArray = wordUpper.split(""); made this global above
+    const wordUpper = word.toUpperCase(); //was global above
+    const wordArray = wordUpper.split(""); //was global above
     const revealWord = [];
     for (const letter of wordArray) {
         if (guessedLetters.includes(letter)) { // why don't need a for...of loop to cycle through guessedLetters?
@@ -119,6 +121,7 @@ const updateWordInProgress = function (guessedLetters) {
         }
     }
     wordInProgress.innerText = revealWord.join("");
+    console.log(revealWord);
     
     checkWin(revealWord); // why no parameter required, but also ok to pass one?
 };
@@ -126,7 +129,9 @@ const updateWordInProgress = function (guessedLetters) {
 //tallies remaining guesses allowed
 const countGuessesRemaining = function(input) { //userGuess, input, or validatedGuess as the parameter? userGuess and validatedGuess aren't global, so I'm going with input
     //tell user if their guess is in the word
-    if (!wordUpper.includes(input)) {
+    //might need to uppercase again here
+    word.toUpperCase();
+    if (!word.includes(input)) {
         remainingGuesses -= 1;
         message.innerText = "Sorry! That's not a letter in the word.";
     } else {
@@ -134,7 +139,7 @@ const countGuessesRemaining = function(input) { //userGuess, input, or validated
     }
     //update tally of remaining guesses
     if (remainingGuesses === 0) {
-        message.innerText = `Game over! The word was ${wordUpper}. Better luck next time!`;
+        message.innerText = `Game over! The word was ${word}. Better luck next time!`;
     } else if (remainingGuesses === 1) {
         remainingGuessesElement.innerText = "You have just one guess left!";
     } else {
@@ -147,7 +152,7 @@ const countGuessesRemaining = function(input) { //userGuess, input, or validated
 const checkWin = function(revealWord){ //why no parameter required?
     //confirm whether the word in progress matches final word
     //used stringify, since this situation truly requires just strings
-    if (JSON.stringify(wordArray) === JSON.stringify(revealWord)){
+    if (word === JSON.stringify(revealWord)){
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
     }
