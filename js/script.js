@@ -9,10 +9,10 @@ const message = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
 
 //global variables
-let word = "magnolia"; //magnolia
+const word = "magnolia"; //magnolia
 const guessedLetters = [];
-//const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
-//const wordArray = wordUpper.split("");
+const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
+const wordArray = wordUpper.split("");
 let remainingGuesses = 8;
 
 // async to fetch a random word
@@ -20,17 +20,11 @@ const getWord = async function () {
     const randomWords = await fetch ("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
     const randomWordsFormatted = await randomWords.text();
     const randomWordsArray = randomWordsFormatted.split("\n");
-    //const randomWordsArray = ["rock", "paper", "scissors"]; simple array to check if randomIndex is working
     const randomIndex = Math.floor(Math.random()*randomWordsArray.length);
-    const oneRandomWord = randomWordsArray[randomIndex].trim();
-    //math randomizer to generate an index of length of array minus 1
+    const oneRandomWord = randomWordsArray[randomIndex];
     console.log(oneRandomWord);
-    word = oneRandomWord;
     placeholders(word);
-    
 };
-
-getWord();
 
 // hide the word to guess as a series of dots
 const placeholders = function (word) {
@@ -99,7 +93,7 @@ const makeGuess = function (validatedGuess) { //"accepts a letter as the paramet
         countGuessesRemaining(validatedGuess);
         updateWordInProgress(guessedLetters);
     }
-    //console.log(guessedLetters);
+    console.log(guessedLetters);
 };
 
 //shows user a list of all letters guessed, whether in the word or not
@@ -113,26 +107,25 @@ const showLetterGuessed = function (validatedGuess) { // parameter = validatedGu
 
 //replaces dots with letters, when user guesses a letter that is in the word
 const updateWordInProgress = function (guessedLetters) {
-    const wordUpper = word.toUpperCase();
-    const wordArray = wordUpper.split("");
+    //if word includes guessed letters, replace a dot with the correct letter
+    //const wordUpper = word.toUpperCase(); made this global above
+    //const wordArray = wordUpper.split(""); made this global above
     const revealWord = [];
     for (const letter of wordArray) {
-        if (guessedLetters.includes(letter)) { 
+        if (guessedLetters.includes(letter)) { // why don't need a for...of loop to cycle through guessedLetters?
             revealWord.push(letter);
         } else {
             revealWord.push("●");
         }
     }
     wordInProgress.innerText = revealWord.join("");
-    console.log(wordArray);
-    console.log(revealWord);
+    
     checkWin(revealWord); // why no parameter required, but also ok to pass one?
 };
 
 //tallies remaining guesses allowed
 const countGuessesRemaining = function(input) { //userGuess, input, or validatedGuess as the parameter? userGuess and validatedGuess aren't global, so I'm going with input
     //tell user if their guess is in the word
-    const wordUpper = word.toUpperCase();
     if (!wordUpper.includes(input)) {
         remainingGuesses -= 1;
         message.innerText = "Sorry! That's not a letter in the word.";
@@ -151,7 +144,7 @@ const countGuessesRemaining = function(input) { //userGuess, input, or validated
 }; 
 
 //checks if user has guessed all the right letters
-const checkWin = function(revealWord){ //why no parameter required? why are wordArray and revealWord okay to use as parameters? Is it because they're defined in updateWordInProgress, where checkWin is called?
+const checkWin = function(revealWord){ //why no parameter required?
     //confirm whether the word in progress matches final word
     //used stringify, since this situation truly requires just strings
     if (JSON.stringify(wordArray) === JSON.stringify(revealWord)){
