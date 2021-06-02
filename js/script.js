@@ -17,8 +17,13 @@ let remainingGuesses = 8;
 
 // async to fetch a random word
 const getWord = async function () {
-    const randomWord = await fetch ();
-    const randomWordFormatted = await randomWord.json();
+    const randomWords = await fetch ("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+    const randomWordsFormatted = await randomWords.text();
+    const randomWordsArray = randomWordsFormatted.split("\n");
+    const randomIndex = Math.floor(Math.random()*randomWordsArray.length);
+    const oneRandomWord = randomWordsArray[randomIndex];
+    console.log(oneRandomWord);
+    placeholders(word);
 };
 
 // hide the word to guess as a series of dots
@@ -31,7 +36,7 @@ const placeholders = function (word) {
     wordInProgress.innerText = placeholderSymbols.join("");
 };
 
-placeholders(word);
+getWord();
 
 //can I put event listener at the bottom of the code, so it all flows in order?
 
