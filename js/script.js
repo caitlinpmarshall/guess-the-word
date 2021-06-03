@@ -14,7 +14,7 @@ const guessedLetters = [];
 //const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
 //having these up here seems to be forcing the code back to magnolia
 //const wordArray = wordUpper.split("");
-let remainingGuesses = 4;
+let remainingGuesses = 8;
 
 // async to fetch a random word
 const getWord = async function () {
@@ -153,14 +153,14 @@ const countGuessesRemaining = function(userGuess) { //userGuess, input, or valid
 }; 
 
 //checks if user has guessed all the right letters
-const checkWin = function(revealWord){ //why no parameter required?
+const checkWin = function(){ //why no parameter required?
     //confirm whether the word in progress matches final word
     //used stringify, since this situation truly requires just strings
     console.log(`checkWin word variable: ${word.toUpperCase()}`);
     console.log(wordInProgress.innerText);
     if (word.toUpperCase() === wordInProgress.innerText){
         message.classList.add("win");
-        message.innerHTML = '<p class="highlight">You guessed correct the word! Congrats!</p>';
+        message.innerHTML = '<p class="highlight">You guessed the correct word! Congrats!</p>';
     }
 };
 
