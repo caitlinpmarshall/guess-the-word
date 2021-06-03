@@ -14,7 +14,7 @@ const guessedLetters = [];
 //const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
 //having these up here seems to be forcing the code back to magnolia
 //const wordArray = wordUpper.split("");
-let remainingGuesses = 8;
+let remainingGuesses = 4;
 
 // async to fetch a random word
 const getWord = async function () {
@@ -106,7 +106,7 @@ const showLetterGuessed = function (validatedGuess) { // parameter = validatedGu
     const li = document.createElement("li");
     li.innerText = `${validatedGuess}`; //why does putting a space here no longer allow word in progress to show?
     guessedLetters.push(li.innerText);
-    guessedLettersElement.innerHTML = `${guessedLetters.join("")}`; //add a .join()?
+    guessedLettersElement.innerHTML = `${guessedLetters}`; //add a .join()?
 };
 
 //replaces dots with letters, when user guesses a letter that is in the word
@@ -142,6 +142,8 @@ const countGuessesRemaining = function(userGuess) { //userGuess, input, or valid
     //update tally of remaining guesses
     if (remainingGuesses === 0) {
         message.innerText = `Game over! The word was "${word}". Better luck next time!`;
+        remainingGuessesElement.innerText = ""; // or "game over"
+        //add something here to stop the game; if you keep entering letters, it will flip back to perpetually say one guess left
     } else if (remainingGuesses === 1) {
         remainingGuessesElement.innerText = "You have just one guess left!";
     } else {
