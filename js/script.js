@@ -140,10 +140,9 @@ const countGuessesRemaining = function(userGuess) { //userGuess, input, or valid
         message.innerText = `Good guess! ${userGuess} is in the word.`;
     }
     //update tally of remaining guesses
-    if (remainingGuesses === 0) {
+    if (remainingGuesses <= 0) { //when it was ===, if you keep entering letters, it will keep running; no longer relevant, this gets caught by the startOver function
         message.innerText = `Game over! The word was "${word}". Better luck next time!`;
-        remainingGuessesElement.innerText = ""; // or "game over"
-        //add something here to stop the game; if you keep entering letters, it will flip back to perpetually say one guess left
+        startOver();
     } else if (remainingGuesses === 1) {
         remainingGuessesElement.innerText = "You have just one guess left!";
     } else {
@@ -161,6 +160,30 @@ const checkWin = function(){ //why no parameter required?
     if (word.toUpperCase() === wordInProgress.innerText){
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed the correct word! Congrats!</p>';
+        startOver();
     }
 };
 
+//hides and shows elements at the end of the game
+const startOver = function (){
+    guessButton.classList.add("hide");
+    remainingGuessesElement.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");
+};
+
+//user clicks the "play again" button to reset the game
+playAgainButton.addEventListener("click", function(e){
+    e.preventDefault;
+    message.classList.remove("win");
+    message.innerText = "";
+    remainingGuessesElement.innerText = "";
+
+    numRemaining = 8;
+    guessedLetters = [];
+    
+
+    guessButton.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+
+});
