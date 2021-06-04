@@ -10,7 +10,7 @@ const playAgainButton = document.querySelector(".play-again");
 
 //global variables
 let word = "magnolia"; //magnolia
-const guessedLetters = [];
+let guessedLetters = [];
 //const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
 //having these up here seems to be forcing the code back to magnolia
 //const wordArray = wordUpper.split("");
@@ -173,17 +173,22 @@ const startOver = function (){
 };
 
 //user clicks the "play again" button to reset the game
-playAgainButton.addEventListener("click", function(e){
-    e.preventDefault;
+playAgainButton.addEventListener("click", function(){
     message.classList.remove("win");
     message.innerText = "";
-    remainingGuessesElement.innerText = "";
-
-    numRemaining = 8;
-    guessedLetters = [];
     
+    remainingGuesses = 8;
+    guessedLetters = []; //this is breaking it...why? needed to make the global guessedLetters into a let, not const
+    numRemaining.innerText = `${remainingGuesses} guesses`;
+    guessedLettersElement.innerHTML = "";
+
+    getWord();
 
     guessButton.classList.remove("hide");
+    remainingGuessesElement.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
     playAgainButton.classList.add("hide");
+
+    
 
 });
