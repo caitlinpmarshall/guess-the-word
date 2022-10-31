@@ -103,18 +103,13 @@ const makeGuess = function (validatedGuess) {
 //shows user a list of all letters guessed, whether in the word or not
 const showLetterGuessed = function (validatedGuess) {
     guessedLettersElement.innerHTML = "";
-    console.log(`the validated guess: ${validatedGuess}`);
+    // console.log(`the validated guess: ${validatedGuess}`);
     guessedLetters.push(validatedGuess);
-    console.log(`the guessed letters array: ${guessedLetters}`);
+    // console.log(`the guessed letters array: ${guessedLetters}`);
     // join to make string of li's, not array of them
     const displayGuesses = guessedLetters.map((letter) => `<li>${letter}</li>`).join("");
-    console.log(displayGuesses);
+    // console.log(displayGuesses);
     guessedLettersElement.innerHTML = displayGuesses;
-
-    // const li = document.createElement("li");
-    // li.innerText = `${validatedGuess}`;
-    // guessedLetters.push(li.innerText);
-    // guessedLettersElement.innerHTML = `${guessedLetters}`;
 };
 
 //replaces dots with letters, when user guesses a letter that is in the word
