@@ -1,3 +1,5 @@
+// note: console logs left in to show examples of dev process; for all production code, logs removed
+
 //document variables
 const guessedLettersElement = document.querySelector(".guessed-letters");
 const guessButton = document.querySelector(".guess");
@@ -9,22 +11,23 @@ const message = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
 
 //global variables
-let word = "magnolia"; //magnolia
+// let word = "magnolia"; //magnolia, for testing
+let word = "";
 let guessedLetters = [];
-//const wordUpper = word.toUpperCase(); //avoid declaring lotsa global variables, so best practice is go put these in their homes
-//having these up here seems to be forcing the code back to magnolia
-//const wordArray = wordUpper.split("");
-let remainingGuesses = 8;
+let remainingGuesses = 2;
 
 // async to fetch a random word
 const getWord = async function () {
+    // get data
     const response = await fetch ("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
     const randomWordsFormatted = await response.text();
     const randomWordsArray = randomWordsFormatted.split("\n");
+    // console.log(randomWordsArray);
     const randomIndex = Math.floor(Math.random()*randomWordsArray.length);
     const oneRandomWord = randomWordsArray[randomIndex].trim();
-    word = oneRandomWord; //should this be let? no! don't declare! because you already have. just reassigning here
-    console.log(`value of variable word: ${word}`);
+    word = oneRandomWord; 
+    // console.log(`value of variable word: ${word}`);
+    // display data, masked with placeholder
     placeholders(word);
 };
 
@@ -40,8 +43,6 @@ const placeholders = function (word) {
 
 getWord();
 
-//can I put event listener at the bottom of the code, so it all flows in order?
-
 //user clicks the "guess" button to submit a letter
 guessButton.addEventListener("click", function (e) {
     e.preventDefault();
@@ -49,10 +50,9 @@ guessButton.addEventListener("click", function (e) {
     userGuess = letterInput.value;
     //console.log(userGuess);
     
-
-    const validatedGuess = validateInput(userGuess); //I had "input" previously; why not input?
-    console.log(`This is the acceptable letter you guessed: ${validatedGuess}`);
-    if (validatedGuess !== undefined) {
+    const validatedGuess = validateInput(userGuess); 
+    // console.log(`This is the acceptable letter you guessed: ${validatedGuess}`);
+    if (validatedGuess !== undefined) { //refactor bc falsy
         makeGuess(validatedGuess);
     }
     letterInput.value = "";
@@ -65,13 +65,13 @@ const validateInput = function(input) {
     if (input === ""){ //was input.value
         message.innerText = "blank";
     } else {
-        message.innerText = input; //was input.value; how come don't need to specify 'value'?
+        message.innerText = input; //was input.value;
     }
 };
 */
 
 //validate whether user input is acceptable
-const validateInput = function (input) { //why not a function of userGuess?
+const validateInput = function (input) {
     const acceptedLetter = /[a-zA-Z]/;
     if (input === "") {
         message.innerText = "Oops, you left it blank.  Please enter a letter from A to Z."
@@ -80,19 +80,17 @@ const validateInput = function (input) { //why not a function of userGuess?
     } else if (!input.match(acceptedLetter)) {
         message.innerText = "Letters only, please! No numbers or special characters."
     } else {
-        return input.toUpperCase(); // this .toUpperCase was inside the makeGuess function 
+        return input.toUpperCase(); 
         //console.log(input);
     }
 };
 
 //once guess is validated as a letter, checks whether it's already been guessed. if not, runs functions to show the letter, tally remaining guesses, and update the word in progress
-const makeGuess = function (validatedGuess) { //"accepts a letter as the parameter" NB: and ONLY a letter
-    //validatedGuess.toUpperCase(); //toUpperCase is now appended to input inside the validator 
-    //validatedGuess was defined only within event listener, but I'm using it here; is that possible b/c makeGuess is called inside event listener?
+const makeGuess = function (validatedGuess) { 
     if (guessedLetters.includes(validatedGuess)) {
         message.innerText = "Oops, you've already guessed that one! Try another."
     } else {
-        //guessedLetters.push(validatedGuess); used to have just this line of code
+        //guessedLetters.push(validatedGuess);
         showLetterGuessed(validatedGuess);
         countGuessesRemaining(validatedGuess);
         updateWordInProgress(guessedLetters);
@@ -101,22 +99,22 @@ const makeGuess = function (validatedGuess) { //"accepts a letter as the paramet
 };
 
 //shows user a list of all letters guessed, whether in the word or not
-const showLetterGuessed = function (validatedGuess) { // parameter = validatedGuess?
+const showLetterGuessed = function (validatedGuess) {
     guessedLettersElement.innerHTML = "";
     const li = document.createElement("li");
-    li.innerText = `${validatedGuess}`; //why does putting a space here no longer allow word in progress to show?
+    li.innerText = `${validatedGuess}`;
     guessedLetters.push(li.innerText);
-    guessedLettersElement.innerHTML = `${guessedLetters}`; //add a .join()?
+    guessedLettersElement.innerHTML = `${guessedLetters}`;
 };
 
 //replaces dots with letters, when user guesses a letter that is in the word
 const updateWordInProgress = function (guessedLetters) {
     //if word includes guessed letters, replace a dot with the correct letter
-    const wordUpper = word.toUpperCase(); //was global above
-    const wordArray = wordUpper.split(""); //was global above
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
     const revealWord = [];
     for (const letter of wordArray) {
-        if (guessedLetters.includes(letter)) { // why don't need a for...of loop to cycle through guessedLetters?
+        if (guessedLetters.includes(letter)) {
             revealWord.push(letter.toUpperCase());
         } else {
             revealWord.push("●");
@@ -129,9 +127,8 @@ const updateWordInProgress = function (guessedLetters) {
 };
 
 //tallies remaining guesses allowed
-const countGuessesRemaining = function(userGuess) { //userGuess, input, or validatedGuess as the parameter? userGuess and validatedGuess aren't global, so I'm going with input
+const countGuessesRemaining = function(userGuess) {
     //tell user if their guess is in the word
-    //might need to uppercase again here
     const upperWord = word.toUpperCase();
     if (!upperWord.includes(userGuess)) {
         remainingGuesses -= 1;
@@ -140,13 +137,13 @@ const countGuessesRemaining = function(userGuess) { //userGuess, input, or valid
         message.innerText = `Good guess! ${userGuess} is in the word.`;
     }
     //update tally of remaining guesses
-    if (remainingGuesses <= 0) { //when it was ===, if you keep entering letters, it will keep running; no longer relevant, this gets caught by the startOver function
+    if (remainingGuesses <= 0) { 
         message.innerText = `Game over! The word was "${word}". Better luck next time!`;
         startOver();
     } else if (remainingGuesses === 1) {
         remainingGuessesElement.innerText = "You have just one guess left!";
     } else {
-        console.log(remainingGuesses);
+        // console.log(remainingGuesses);
         numRemaining.innerText = `${remainingGuesses} guesses`;
     }
 }; 
@@ -154,9 +151,8 @@ const countGuessesRemaining = function(userGuess) { //userGuess, input, or valid
 //checks if user has guessed all the right letters
 const checkWin = function(){ //why no parameter required?
     //confirm whether the word in progress matches final word
-    //used stringify, since this situation truly requires just strings
-    console.log(`checkWin word variable: ${word.toUpperCase()}`);
-    console.log(wordInProgress.innerText);
+    // console.log(`checkWin word variable: ${word.toUpperCase()}`);
+    // console.log(wordInProgress.innerText);
     if (word.toUpperCase() === wordInProgress.innerText){
         message.classList.add("win");
         message.innerHTML = '<p class="highlight">You guessed the correct word! Congrats!</p>';
@@ -188,7 +184,4 @@ playAgainButton.addEventListener("click", function(){
     remainingGuessesElement.classList.remove("hide");
     guessedLettersElement.classList.remove("hide");
     playAgainButton.classList.add("hide");
-
-    
-
 });
