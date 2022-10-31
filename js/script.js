@@ -14,7 +14,7 @@ const playAgainButton = document.querySelector(".play-again");
 // let word = "magnolia"; //magnolia, for testing
 let word = "";
 let guessedLetters = [];
-let remainingGuesses = 2;
+let remainingGuesses = 8;
 
 // async to fetch a random word
 const getWord = async function () {
@@ -172,7 +172,6 @@ const startOver = function (){
 playAgainButton.addEventListener("click", function(){
     message.classList.remove("win");
     message.innerText = "";
-    
     remainingGuesses = 8;
     guessedLetters = []; //this is breaking it...why? needed to make the global guessedLetters into a let, not const
     numRemaining.innerText = `${remainingGuesses} guesses`;
