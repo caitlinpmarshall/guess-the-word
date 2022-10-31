@@ -2,6 +2,7 @@
 
 //document variables
 const guessedLettersElement = document.querySelector(".guessed-letters");
+const guessForm = document.querySelector(".guess-form");
 const guessButton = document.querySelector(".guess");
 const letterInput = document.querySelector(".letter");
 const wordInProgress = document.querySelector(".word-in-progress");
@@ -49,6 +50,7 @@ guessButton.addEventListener("click", function (e) {
     message.innerText = "";
     userGuess = letterInput.value;
     //console.log(userGuess);
+    console.log(remainingGuesses);
     
     const validatedGuess = validateInput(userGuess); 
     // console.log(`This is the acceptable letter you guessed: ${validatedGuess}`);
@@ -141,7 +143,7 @@ const countGuessesRemaining = function(userGuess) {
         message.innerText = `Game over! The word was "${word}". Better luck next time!`;
         startOver();
     } else if (remainingGuesses === 1) {
-        remainingGuessesElement.innerText = "You have just one guess left!";
+        numRemaining.innerText = `${remainingGuesses} guess`;
     } else {
         // console.log(remainingGuesses);
         numRemaining.innerText = `${remainingGuesses} guesses`;
@@ -162,6 +164,7 @@ const checkWin = function(){ //why no parameter required?
 
 //hides and shows elements at the end of the game
 const startOver = function (){
+    // guessForm.classList.add("hide");
     guessButton.classList.add("hide");
     remainingGuessesElement.classList.add("hide");
     guessedLettersElement.classList.add("hide");
@@ -173,12 +176,14 @@ playAgainButton.addEventListener("click", function(){
     message.classList.remove("win");
     message.innerText = "";
     remainingGuesses = 8;
+    console.log(remainingGuesses);
     guessedLetters = []; //this is breaking it...why? needed to make the global guessedLetters into a let, not const
     numRemaining.innerText = `${remainingGuesses} guesses`;
     guessedLettersElement.innerHTML = "";
 
     getWord();
 
+    // guessForm.classList.remove("hide");
     guessButton.classList.remove("hide");
     remainingGuessesElement.classList.remove("hide");
     guessedLettersElement.classList.remove("hide");
