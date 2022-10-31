@@ -2,9 +2,9 @@
 
 //document variables
 const guessedLettersElement = document.querySelector(".guessed-letters");
-const guessForm = document.querySelector(".guess-form");
-const guessButton = document.querySelector(".guess");
+const inputLabel = document.querySelector(".guess-form label");
 const letterInput = document.querySelector(".letter");
+const guessButton = document.querySelector(".guess");
 const wordInProgress = document.querySelector(".word-in-progress");
 const remainingGuessesElement = document.querySelector(".remaining");
 const numRemaining = document.querySelector(".remaining span");
@@ -164,7 +164,8 @@ const checkWin = function(){ //why no parameter required?
 
 //hides and shows elements at the end of the game
 const startOver = function (){
-    // guessForm.classList.add("hide");
+    inputLabel.classList.add("hide");
+    letterInput.classList.add("hide");
     guessButton.classList.add("hide");
     remainingGuessesElement.classList.add("hide");
     guessedLettersElement.classList.add("hide");
@@ -183,7 +184,8 @@ playAgainButton.addEventListener("click", function(){
 
     getWord();
 
-    // guessForm.classList.remove("hide");
+    inputLabel.classList.remove("hide");
+    letterInput.classList.remove("hide");
     guessButton.classList.remove("hide");
     remainingGuessesElement.classList.remove("hide");
     guessedLettersElement.classList.remove("hide");
