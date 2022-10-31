@@ -50,7 +50,7 @@ guessButton.addEventListener("click", function (e) {
     message.innerText = "";
     userGuess = letterInput.value;
     //console.log(userGuess);
-    console.log(remainingGuesses);
+    // console.log(remainingGuesses);
     
     const validatedGuess = validateInput(userGuess); 
     // console.log(`This is the acceptable letter you guessed: ${validatedGuess}`);
@@ -123,7 +123,7 @@ const updateWordInProgress = function (guessedLetters) {
         }
     }
     wordInProgress.innerText = revealWord.join("");
-    console.log(revealWord);
+    // console.log(revealWord);
     
     checkWin(revealWord); // why no parameter required, but also ok to pass one?
 };
@@ -177,7 +177,7 @@ playAgainButton.addEventListener("click", function(){
     message.classList.remove("win");
     message.innerText = "";
     remainingGuesses = 8;
-    console.log(remainingGuesses);
+    // console.log(remainingGuesses);
     guessedLetters = []; //this is breaking it...why? needed to make the global guessedLetters into a let, not const
     numRemaining.innerText = `${remainingGuesses} guesses`;
     guessedLettersElement.innerHTML = "";
